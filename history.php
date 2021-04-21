@@ -5,7 +5,7 @@
 
 class history extends base_component implements components_interface {
 
-	public function make() : string {
+	public function make_history() : string {
 		$html = '';
 
 		ob_start();
@@ -45,6 +45,6 @@ class history extends base_component implements components_interface {
 	}
 
 	public function gen_content( ) : string {		
-		return $this -> make_text();
+		return $this -> make_history();
 	}
 }
