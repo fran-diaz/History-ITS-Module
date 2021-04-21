@@ -17,24 +17,44 @@ class history extends base_component implements components_interface {
 			$data = decode( $_REQUEST['d'] );
 			$rows = $this -> _ITExt -> select('system__history','*', ['table' => $data['table'],'ref' => $data['id'],'ORDER' => ['date' => 'DESC']]);
 			$actual_data = $this -> _ITExt -> get($data['table'],'*', [ $data['table'].'_id' => $data['id'] ]);
-
+			echo '<div class="accordion" id="accordionExample">';
 			if($rows){foreach($rows as $num => $row){
 				//$json_string = json_encode(json_decode($row['data']), JSON_PRETTY_PRINT); 
 				//echo "<h4 class=\"mt-3 mb-1\">".$_ITE->funcs->date_format($row['date'],5)."</h4><pre>".$json_string."</pre>";
-				echo "<h5 class=\"mt-3 mb-1\">".$this -> _ITE -> funcs -> date_format($row['date'],5)."</h5><ul>";
-				$json_array = json_decode( $row['data'], true );
-				foreach( $json_array as $key => $value ){
-					
-					if( isset( $actual_data[$key] ) && $actual_data[$key] == $value ){
-						echo "<li>".$key.': '.$value."</li>\n";
-					} else {
-						echo "<li>".$key.': <span class="yellow400_bg">'.$value."</span></li>\n";
-					}
-				}
-				echo '</ul>';
+				?>
+				  <div class="card">
+				    <div class="card-header" id="headingOne">
+				      <h2 class="mb-0">
+				        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				          <?=$this -> _ITE -> funcs -> date_format( $row['date'], 5 )?>
+				        </button>
+				      </h2>
+				    </div>
 
-				$actual_data = $json_array;
+				    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+				      <div class="card-body">
+				      	<ul>
+				        <?php
+						$json_array = json_decode( $row['data'], true );
+						foreach( $json_array as $key => $value ){
+							
+							if( isset( $actual_data[$key] ) && $actual_data[$key] == $value ){
+								echo "<li>".$key.': '.$value."</li>\n";
+							} else {
+								echo "<li>".$key.': <span class="yellow400_bg">'.$value."</span></li>\n";
+							}
+						}
+
+						$actual_data = $json_array;
+				        ?>
+			    		</ul>
+				      </div>
+				    </div>
+				  </div>
+				  
+				
 			}}
+			echo '</div>';
 		}
 		?>
 		</div>
