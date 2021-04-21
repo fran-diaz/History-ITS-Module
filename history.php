@@ -10,7 +10,8 @@ class history extends base_component implements components_interface {
 
 		ob_start();
 		?>
-		<p>En amarillo, el valor previo de los campos que han sido cambiados.</p>
+		<div class="p-3">
+		<p class="small alert alert-warning">* En amarillo, el valor previo de los campos que han sido cambiados.</p>
 		<?php
 		if( isset($_REQUEST['d']) ){
 			$data = decode( $_REQUEST['d'] );
@@ -20,22 +21,23 @@ class history extends base_component implements components_interface {
 			if($rows){foreach($rows as $num => $row){
 				//$json_string = json_encode(json_decode($row['data']), JSON_PRETTY_PRINT); 
 				//echo "<h4 class=\"mt-3 mb-1\">".$_ITE->funcs->date_format($row['date'],5)."</h4><pre>".$json_string."</pre>";
-				echo "<h4 class=\"mt-3 mb-1\">".$this -> _ITE -> funcs -> date_format($row['date'],5)."</h4><pre>";
+				echo "<h5 class=\"mt-3 mb-1\">".$this -> _ITE -> funcs -> date_format($row['date'],5)."</h5><ul>";
 				$json_array = json_decode( $row['data'], true );
 				foreach( $json_array as $key => $value ){
 					
 					if( isset( $actual_data[$key] ) && $actual_data[$key] == $value ){
-						echo "- ".$key.': '.$value."\n";
+						echo "<li>".$key.': '.$value."</li>\n";
 					} else {
-						echo "- ".$key.': <span class="yellow400_bg">'.$value."</span>\n";
+						echo "<li>".$key.': <span class="yellow400_bg">'.$value."</span></li>\n";
 					}
 				}
-				echo '</pre>';
+				echo '</ul>';
 
 				$actual_data = $json_array;
 			}}
 		}
 		?>
+		</div>
 		<?php
 
 		$html = ob_get_contents();
